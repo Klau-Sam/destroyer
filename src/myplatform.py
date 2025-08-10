@@ -1,7 +1,7 @@
 import pygame
 import settings
 
-class Platform(pygame.sprite.Sprite):
+class MyPlatform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.surf = pygame.Surface((settings.WIDTH, 20))

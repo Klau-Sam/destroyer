@@ -3,7 +3,7 @@ import settings
 
 from pygame.locals import *
 from player import Player
-from platform import Platform
+from myplatform import MyPlatform
 
 class Game:
     def __init__(self):
@@ -13,7 +13,7 @@ class Game:
         self.displaysurface = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
         pygame.display.set_caption("Game")
 
-        self.PT1 = Platform()
+        self.PT1 = MyPlatform()
         self.P1 = Player()
 
         self.all_sprites = pygame.sprite.Group()
