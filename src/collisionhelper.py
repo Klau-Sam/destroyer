@@ -16,9 +16,8 @@ class CollisionHelper:
         """Call each frame: triggers onCollided for any overlapping pairs."""
         for c in self.collidables:
             # collect all unique overlaps; skip self
-            collided: List["GameObject"] = [
+            collided: List[GameObject] = [
                 obj for obj in self.targets
                 if obj is not c and c.rect.colliderect(obj.rect)
             ]
-            if collided:  # only notify when there are hits
-                c.onCollided(collided)
+            c.onCollided(collided)

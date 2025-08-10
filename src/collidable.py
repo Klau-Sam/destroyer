@@ -1,6 +1,8 @@
 from abc import abstractmethod, ABC
 from typing import List
 
+import pygame
+
 from gameobject import GameObject
 
 class Collidable(ABC):  # type: ignore[name-defined]

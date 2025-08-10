@@ -1,6 +1,7 @@
 from typing import List
 
 import pygame
+from pygame import rect
 
 from pygame.locals import *
 from settings import FRIC, ACC
@@ -60,11 +61,26 @@ class Player(GameObject, Collidable):
 
     def onCollided(self, others: List[GameObject]) -> None:
         print("onCollided")
-        self.on_ground = any(e.type == ObjectType.floor for e in others)
-        for e in others:
-            if e.type == ObjectType.floor:
-                self.pos.y = e.rect.y - self.rect.height
+        print(others)
+        self._checkIfObjectIsOnTheGround(others)
 
+    def _checkIfObjectIsOnTheGround(self, others: List[GameObject]):
+        self.on_ground = False
+
+        floors = [e for e in others if e.type == ObjectType.floor]
+        if not floors:
+            return
+
+        floors_to_land = list(filter(lambda f: 0 <= self.rect.bottom - f.rect.top <= 50, floors))
+
+        if not floors_to_land:
+            return
+
+        print(floors_to_land)
+        closest = floors_to_land[0]
+
+        self.pos.y = self.pos.y = closest.rect.top - self.rect.height
+        self.on_ground = True
 
     def updateObject(self, dt: float):
         # Gravity

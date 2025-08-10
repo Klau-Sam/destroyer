@@ -1,7 +1,9 @@
 import pygame
 import settings
+from src.gameobject import GameObject
 
-class Enemy(pygame.sprite.Sprite):
+
+class Enemy(GameObject):
       def __init__(self):
         super().__init__() 
         self.image = pygame.image.load("enemy.webp")
