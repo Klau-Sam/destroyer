@@ -10,7 +10,7 @@ class Player(pygame.sprite.Sprite):
                  pos=(0, 0),
                  idle_path="assets/player_idle.webp",
                  walk_pattern="assets/player_walk_{i}.webp",  # expects i = 0..walk_frames-1
-                 walk_frames=2,
+                 walk_frames=4,
                  scale=None,
                  anim_fps=10):
         super().__init__()
