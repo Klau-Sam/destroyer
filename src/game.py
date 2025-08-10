@@ -9,7 +9,7 @@ from myplatform import MyPlatform
 class Game:
     def __init__(self):
         pygame.init()
-        self.FramePerSec = pygame.time.Clock()
+        self.clock = pygame.time.Clock()
 
         self.displaysurface = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
         pygame.display.set_caption("Game")
@@ -21,9 +21,6 @@ class Game:
         self.all_sprites.add(self.PT1)
         self.all_sprites.add(self.P1)
 
-        self.clock = pygame.time.Clock()
-
-
     def new(self):
         """Start a new game"""
         self.run()
@@ -32,7 +29,6 @@ class Game:
         """Game loop"""
         while True:
             dt = self.clock.tick(settings.FPS) / 1000.0  # seconds since last frame
-
 
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -43,9 +39,8 @@ class Game:
             self.P1.move(dt)
             self.all_sprites.draw(self.displaysurface)
 
-
             pygame.display.update()
-            self.FramePerSec.tick(settings.FPS)
+            self.clock.tick(settings.FPS)
 
 
     # def events(self):

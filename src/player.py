@@ -57,7 +57,6 @@ class Player(pygame.sprite.Sprite):
             self.acc.x = ACC
             self.facing_right = True
 
-
         # Simple “friction”
         self.acc.x += self.vel.x * FRIC
 
