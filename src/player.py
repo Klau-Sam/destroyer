@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         # Physics-ish state
         self.pos = vec(pos)
         self.vel = vec(0, 0)
-        self.acc = vec(0, 0)
+        self.acc = vec(0, 0.5) # gravity
 
         # Animation state
         self.facing_right = True
@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
         self.anim_frame_time = 1.0 / float(anim_fps)
 
     def move(self, dt: float):
-        self.acc.update(0, 0)
+        self.acc.update(0, 0.5)
 
         pressed = pygame.key.get_pressed()
 
