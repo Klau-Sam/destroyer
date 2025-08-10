@@ -30,7 +30,7 @@ class Game:
         self.all_sprites.add(bottom_platform)
 
         self.generate_platforms()
-        self.collisionsHelper = CollisionHelper([self.P1], self.platforms)
+        self.collisionsHelper = CollisionHelper([self.P1], [bottom_platform])
 
         self.run()
 

@@ -2,8 +2,11 @@ import pygame
 import random
 
 from settings import *
+from gameobject import GameObject
+from objecttype import ObjectType
 
-class CustomPlatform(pygame.sprite.Sprite):
+
+class CustomPlatform(GameObject):
     def __init__(self, width=None, height=None, x=None, y=None):
         super().__init__()
         self.width = width if width is not None else random.randint(PLAT_MIN_WIDTH, PLAT_MAX_WIDTH)
@@ -21,3 +24,9 @@ class CustomPlatform(pygame.sprite.Sprite):
     def updateObject(self, dt):
         """No updates needed for now, but required for compatibility."""
         pass
+
+    @property
+    def type(self) -> ObjectType:
+        return ObjectType.floor
+
+

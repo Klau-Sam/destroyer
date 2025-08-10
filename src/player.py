@@ -68,7 +68,7 @@ class Player(GameObject, Collidable):
 
     def updateObject(self, dt: float):
         # Gravity
-        self.acc.y = 0 if self.on_ground else 0.5
+        self.acc.y = 0.0 if self.on_ground else 0.5
 
         # Simple “friction”
         self.acc.x += self.vel.x * FRIC
@@ -84,7 +84,7 @@ class Player(GameObject, Collidable):
         # animate & sync rect
         self._animate(dt)
         self._update_rect()
-        self.acc = 0
+        self.acc.x = 0
 
     def move(self, dt: float):
         pressed = pygame.key.get_pressed()
