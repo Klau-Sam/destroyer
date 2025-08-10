@@ -22,10 +22,10 @@ class Game:
         self.platforms = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
 
-        self.P1 = Player(scale=(settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
         bottom_platform = CustomPlatform(width=settings.WIDTH, height=20, x=settings.WIDTH // 2,
                        y=settings.HEIGHT - 10)
         self.platforms.add(bottom_platform)
+        self.P1 = Player(scale=(settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT), platforms=self.platforms)
         self.all_sprites.add(self.P1)
         self.all_sprites.add(bottom_platform)
 
