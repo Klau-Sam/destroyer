@@ -39,7 +39,7 @@ class Player(GameObject, Collidable):
         # Physics-ish state
         self.pos = vec(pos)
         self.vel = vec(0, 0)
-        self.acc = vec(0, 0)
+        self.acc = vec(0, 0.5) # gravity
 
         # Animation state
         self.facing_right = True
@@ -47,7 +47,6 @@ class Player(GameObject, Collidable):
         self.frame_index = 0
         self.anim_timer = 0.0
         self.anim_frame_time = 1.0 / float(anim_fps)
-
 
     def onCollided(self, other: GameObject) -> None:
         print("onCollided")
@@ -69,7 +68,7 @@ class Player(GameObject, Collidable):
         self._update_rect()
 
     def move(self, dt: float):
-        self.acc.update(0, 0)
+        self.acc.update(0, 0.5)
 
         pressed = pygame.key.get_pressed()
 

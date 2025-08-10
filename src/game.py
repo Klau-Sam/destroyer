@@ -4,13 +4,13 @@ import settings
 from pygame.locals import *
 from player import Player
 from myplatform import MyPlatform
-from CollisionHelper import CollisionHelper
+from collisionhelper import CollisionHelper
 
 
 class Game:
     def __init__(self):
         pygame.init()
-        self.FramePerSec = pygame.time.Clock()
+        self.clock = pygame.time.Clock()
 
         self.displaysurface = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
         pygame.display.set_caption("Game")
@@ -36,7 +36,6 @@ class Game:
         while True:
             dt = self.clock.tick(settings.FPS) / 1000.0  # seconds since last frame
 
-
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
@@ -51,9 +50,8 @@ class Game:
 
             self.all_sprites.draw(self.displaysurface)
 
-
             pygame.display.update()
-            self.FramePerSec.tick(settings.FPS)
+            self.clock.tick(settings.FPS)
 
 
     # def events(self):
