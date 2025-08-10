@@ -5,6 +5,7 @@ from pygame.locals import *
 from player import Player
 from custom_platform import CustomPlatform
 from collisionhelper import CollisionHelper
+from enemy import Enemy
 
 
 class Game:
@@ -23,14 +24,17 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
 
         self.P1 = Player(scale=(settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
+        enemy = Enemy(pos=(300, 0), scale=(settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
+
         bottom_platform = CustomPlatform(width=settings.WIDTH, height=20, x=settings.WIDTH // 2,
-                       y=settings.HEIGHT - 10)
+                                         y=settings.HEIGHT - 10)
         self.platforms.add(bottom_platform)
         self.all_sprites.add(self.P1)
         self.all_sprites.add(bottom_platform)
+        self.all_sprites.add(enemy)
 
         self.generate_platforms()
-        self.collisionsHelper = CollisionHelper([self.P1], self.platforms)
+        self.collisionsHelper = CollisionHelper([self.P1, enemy], self.platforms)
 
         self.run()
 
@@ -44,8 +48,8 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            self.displaysurface.fill((0,0,0))
-            self.P1.move(dt)
+            self.displaysurface.fill((0, 0, 0))
+            self.P1.move()
             self.collisionsHelper.checkCollisions()
 
             for sprite in self.all_sprites:
@@ -56,11 +60,10 @@ class Game:
             pygame.display.update()
             self.clock.tick(settings.FPS)
 
-            hits = pygame.sprite.spritecollide(self.P1 , self.platforms, False)
+            hits = pygame.sprite.spritecollide(self.P1, self.platforms, False)
             if hits:
                 self.P1.pos.y = hits[0].rect.top + 1
                 self.P1.vel.y = 0
-
 
     # def events(self):
     #     """Handle events"""
