@@ -1,6 +1,9 @@
 import pygame
 from abc import ABC, abstractmethod
 
+from objecttype import ObjectType
+
+
 class GameObject(pygame.sprite.Sprite, ABC):
     def __init__(self, rect: pygame.Rect | None = None):
         super().__init__()
@@ -14,3 +17,7 @@ class GameObject(pygame.sprite.Sprite, ABC):
     def updateObject(self, dt: float) -> None:
         pass
 
+    @property
+    @abstractmethod
+    def type(self) -> ObjectType:
+        pass

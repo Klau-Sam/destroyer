@@ -1,3 +1,5 @@
+from typing import List
+
 import pygame
 
 from pygame.locals import *
@@ -6,6 +8,7 @@ from pygame.math import Vector2 as vec
 
 from gameobject import GameObject
 from collidable import Collidable
+from objecttype import ObjectType
 
 
 class Player(GameObject, Collidable):
@@ -48,11 +51,25 @@ class Player(GameObject, Collidable):
         self.anim_timer = 0.0
         self.anim_frame_time = 1.0 / float(anim_fps)
 
-    def onCollided(self, other: GameObject) -> None:
+        self.on_ground = False
+
+
+    @property
+    def type(self) -> ObjectType:
+        return ObjectType.bullet
+
+    def onCollided(self, others: List[GameObject]) -> None:
         print("onCollided")
-        pass
+        self.on_ground = any(e.type == ObjectType.floor for e in others)
+        for e in others:
+            if e.type == ObjectType.floor:
+                self.pos.y = e.rect.y - self.rect.height
+
 
     def updateObject(self, dt: float):
+        # Gravity
+        self.acc.y = 0 if self.on_ground else 0.5
+
         # Simple “friction”
         self.acc.x += self.vel.x * FRIC
 
@@ -60,24 +77,26 @@ class Player(GameObject, Collidable):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
 
-        # walking only when actually moving (tweak threshold if needed)
-        self.walking = abs(self.vel.x) > 0.05
+        print(self.vel)
+        print(self.acc)
+        print(self.pos)
 
         # animate & sync rect
         self._animate(dt)
         self._update_rect()
+        self.acc = 0
 
     def move(self, dt: float):
-        self.acc.update(0, 0.5)
-
         pressed = pygame.key.get_pressed()
-
+        self.walking = True
         if pressed[K_LEFT]:
             self.acc.x = -ACC
             self.facing_right = False
-        if pressed[K_RIGHT]:
+        elif pressed[K_RIGHT]:
             self.acc.x = ACC
             self.facing_right = True
+        else:
+            self.walking = False
 
 
     def _animate(self, dt: float):

@@ -42,8 +42,8 @@ class Game:
                     sys.exit()
 
             self.displaysurface.fill((0,0,0))
-            self.collisionsHelper.checkCollisions()
             self.P1.move(dt)
+            self.collisionsHelper.checkCollisions()
 
             for sprite in self.all_sprites:
                 sprite.updateObject(dt)
