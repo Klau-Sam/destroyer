@@ -1,43 +1,67 @@
-# Example file showing a circle moving on screen
 import pygame
+from pygame.locals import *
 
-# pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
-clock = pygame.time.Clock()
-running = True
-dt = 0
+vec = pygame.math.Vector2  # 2 for two dimensional
 
-player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+HEIGHT = 450
+WIDTH = 400
+ACC = 0.5
+FRIC = -0.12
+FPS = 60
 
-while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
+FramePerSec = pygame.time.Clock()
+
+displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Game")
+
+
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.surf = pygame.Surface((30, 30))
+        self.surf.fill((128,255,40))
+        self.rect = self.surf.get_rect(center = (10, 420))
+
+    def move(self):
+        self.acc = vec(0,0)
+
+        pressed_keys = pygame.key.get_pressed()
+
+        if pressed_keys[K_LEFT]:
+            self.acc.x = -ACC
+        if pressed_keys[K_RIGHT]:
+            self.acc.x = ACC
+
+
+class platform(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.surf = pygame.Surface((WIDTH, 20))
+        self.surf.fill((255,0,0))
+        self.rect = self.surf.get_rect(center = (WIDTH/2, HEIGHT - 10))
+
+
+PT1 = platform()
+P1 = Player()
+
+
+
+all_sprites = pygame.sprite.Group()
+all_sprites.add(PT1)
+all_sprites.add(P1)
+
+while True:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("purple")
+    displaysurface.fill((0,0,0))
 
-    pygame.draw.circle(screen, "red", player_pos, 40)
-
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        player_pos.y -= 300 * dt
-    if keys[pygame.K_s]:
-        player_pos.y += 300 * dt
-    if keys[pygame.K_a]:
-        player_pos.x -= 300 * dt
-    if keys[pygame.K_d]:
-        player_pos.x += 300 * dt
-
-    # flip() the display to put your work on screen
-    pygame.display.flip()
-
-    # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-
-    # independent physics.
-    dt = clock.tick(60) / 1000
-
-pygame.quit()
+    for entity in all_sprites:
+        displaysurface.blit(entity.surf, entity.rect)
+    P1.move()
+    pygame.display.update()
+    FramePerSec.tick(FPS)
