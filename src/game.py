@@ -3,7 +3,7 @@ import settings
 
 from pygame.locals import *
 from player import Player
-from myplatform import MyPlatform
+from custom_platform import CustomPlatform
 from collisionhelper import CollisionHelper
 
 
@@ -15,20 +15,23 @@ class Game:
         self.displaysurface = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
         pygame.display.set_caption("Game")
 
-        self.PT1 = MyPlatform()
-        self.P1 = Player(scale=(settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
-
-        self.all_sprites = pygame.sprite.Group()
-        self.all_sprites.add(self.PT1)
-        self.all_sprites.add(self.P1)
-
         self.clock = pygame.time.Clock()
-
-        self.collisionsHelper = CollisionHelper([self.P1],[self.PT1])
-
 
     def new(self):
         """Start a new game"""
+        self.platforms = pygame.sprite.Group()
+        self.all_sprites = pygame.sprite.Group()
+
+        self.P1 = Player(scale=(settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
+        bottom_platform = CustomPlatform(width=settings.WIDTH, height=20, x=settings.WIDTH // 2,
+                       y=settings.HEIGHT - 10)
+        self.platforms.add(bottom_platform)
+        self.all_sprites.add(self.P1)
+        self.all_sprites.add(bottom_platform)
+
+        self.generate_platforms()
+        self.collisionsHelper = CollisionHelper([self.P1], self.platforms)
+
         self.run()
 
     def run(self):
@@ -63,6 +66,21 @@ class Game:
     def update(self):
         """Update game state"""
         pass  # Game logic here
+
+    def generate_platforms(self):
+        """Generate platforms without overlap."""
+        required_platforms = 6  # Number of platforms needed
+        while len(self.platforms) < required_platforms:
+            new_platform = CustomPlatform()  # Create a new random platform
+
+            # Check for collision with existing platforms
+            collision = pygame.sprite.spritecollide(
+                new_platform, self.platforms, False, collided=pygame.sprite.collide_rect
+            )
+
+            if not collision:  # If no collision, add the platform
+                self.platforms.add(new_platform)
+                self.all_sprites.add(new_platform)
 
     # def draw(self):
     #     """Render everything"""
