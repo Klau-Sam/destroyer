@@ -12,6 +12,7 @@ from objecttype import ObjectType
 class Player(AbstractCharacter):
     def __init__(self,
                  pos=(0, 0),
+                 platforms=None,
                  idle_path="assets/player_idle.webp",
                  walk_pattern="assets/player_walk_{i}.webp",  # expects i = 0..walk_frames-1
                  walk_frames=4,
@@ -19,6 +20,8 @@ class Player(AbstractCharacter):
                  anim_fps=10):
         super().__init__(idle_path=idle_path, walk_pattern=walk_pattern, walk_frames=walk_frames, scale=scale,
                          anim_fps=anim_fps, pos=pos)
+
+        self.platforms = platforms
 
     @property
     def type(self) -> ObjectType:
@@ -40,5 +43,6 @@ class Player(AbstractCharacter):
             self.walking = False
 
     def jump(self):
-        if self.on_ground:
+        hits = pygame.sprite.spritecollide(self, self.platforms, False)
+        if hits:
             self.vel.y = -15
