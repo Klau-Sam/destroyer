@@ -67,8 +67,6 @@ class Player(GameObject, Collidable):
 
 
     def updateObject(self, dt: float):
-        # Gravity
-        self.acc.y = 0.0 if self.on_ground else 0.5
 
         # Simple “friction”
         self.acc.x += self.vel.x * FRIC
@@ -95,9 +93,14 @@ class Player(GameObject, Collidable):
         elif pressed[K_RIGHT]:
             self.acc.x = ACC
             self.facing_right = True
+        elif pressed[K_UP]:
+            self.jump()
         else:
             self.walking = False
 
+    def jump(self):
+        if self.on_ground:
+            self.vel.y = -15
 
     def _animate(self, dt: float):
         if self.walking and self.walk_right:
