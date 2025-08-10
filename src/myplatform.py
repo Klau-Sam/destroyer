@@ -2,8 +2,8 @@ import pygame
 import settings
 
 class MyPlatform(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, pos=(0,0), size=(200, 20), color=(100, 100, 100)):
         super().__init__()
-        self.surf = pygame.Surface((settings.WIDTH, 20))
-        self.surf.fill((255,0,0))
-        self.rect = self.surf.get_rect(center = (settings.WIDTH/2, settings.HEIGHT - 10))
+        self.image = pygame.Surface(size)
+        self.image.fill(color)
+        self.rect = self.image.get_rect(topleft=pos)
