@@ -1,5 +1,7 @@
 from typing import Iterable, List
 
+import pygame
+
 from collidable import Collidable
 from gameobject import GameObject
 
@@ -15,9 +17,6 @@ class CollisionHelper:
     def checkCollisions(self) -> None:
         """Call each frame: triggers onCollided for any overlapping pairs."""
         for c in self.collidables:
+            hits = pygame.sprite.spritecollide(c , self.targets, False)
             # collect all unique overlaps; skip self
-            collided: List[GameObject] = [
-                obj for obj in self.targets
-                if obj is not c and c.rect.colliderect(obj.rect)
-            ]
-            c.onCollided(collided)
+            c.onCollided(hits)

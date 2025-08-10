@@ -57,6 +57,8 @@ class AbstractCharacter(GameObject, Collidable, ABC):
         Update the character's state (position, velocity, etc.).
         Subclasses must implement specific details (e.g., enemy AI or player input handling).
         """
+        # Gravity
+        self.acc.y = 0.0 if self.on_ground else 0.5
         # Simple "friction"
         self.acc.x += self.vel.x * self.friction
         # Integrate motion (acceleration -> velocity -> position)

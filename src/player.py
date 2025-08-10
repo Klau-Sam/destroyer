@@ -5,7 +5,6 @@ import pygame
 from pygame.locals import *
 
 from abstract_character import AbstractCharacter
-from gameobject import GameObject
 from objecttype import ObjectType
 
 
@@ -43,6 +42,5 @@ class Player(AbstractCharacter):
             self.walking = False
 
     def jump(self):
-        hits = pygame.sprite.spritecollide(self, self.platforms, False)
-        if hits:
+        if self.on_ground:
             self.vel.y = -15
