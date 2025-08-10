@@ -57,9 +57,10 @@ class Game:
             self.clock.tick(settings.FPS)
 
             hits = pygame.sprite.spritecollide(self.P1 , self.platforms, False)
-            if hits:
-                self.P1.pos.y = hits[0].rect.top + 1
-                self.P1.vel.y = 0
+            if self.P1.vel.y > 0: 
+                if hits:
+                    self.P1.pos.y = hits[0].rect.top + 1 - settings.PLAYER_HEIGHT
+                    self.P1.vel.y = 0
 
 
     # def events(self):
