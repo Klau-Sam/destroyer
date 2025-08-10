@@ -4,6 +4,7 @@ import settings
 from pygame.locals import *
 from player import Player
 from myplatform import MyPlatform
+from CollisionHelper import CollisionHelper
 
 
 class Game:
@@ -23,6 +24,8 @@ class Game:
 
         self.clock = pygame.time.Clock()
 
+        self.collisionsHelper = CollisionHelper([self.P1],[self.PT1])
+
 
     def new(self):
         """Start a new game"""
@@ -40,7 +43,12 @@ class Game:
                     sys.exit()
 
             self.displaysurface.fill((0,0,0))
+            self.collisionsHelper.checkCollisions()
             self.P1.move(dt)
+
+            for sprite in self.all_sprites:
+                sprite.updateObject(dt)
+
             self.all_sprites.draw(self.displaysurface)
 
 

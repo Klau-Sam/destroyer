@@ -4,8 +4,11 @@ from pygame.locals import *
 from settings import FRIC, ACC
 from pygame.math import Vector2 as vec
 
+from gameobject import GameObject
+from collidable import Collidable
 
-class Player(pygame.sprite.Sprite):
+
+class Player(GameObject, Collidable):
     def __init__(self,
                  pos=(0, 0),
                  idle_path="assets/player_idle.webp",
@@ -45,19 +48,12 @@ class Player(pygame.sprite.Sprite):
         self.anim_timer = 0.0
         self.anim_frame_time = 1.0 / float(anim_fps)
 
-    def move(self, dt: float):
-        self.acc.update(0, 0)
 
-        pressed = pygame.key.get_pressed()
+    def onCollided(self, other: GameObject) -> None:
+        print("onCollided")
+        pass
 
-        if pressed[K_LEFT]:
-            self.acc.x = -ACC
-            self.facing_right = False
-        if pressed[K_RIGHT]:
-            self.acc.x = ACC
-            self.facing_right = True
-
-
+    def updateObject(self, dt: float):
         # Simple “friction”
         self.acc.x += self.vel.x * FRIC
 
@@ -71,6 +67,19 @@ class Player(pygame.sprite.Sprite):
         # animate & sync rect
         self._animate(dt)
         self._update_rect()
+
+    def move(self, dt: float):
+        self.acc.update(0, 0)
+
+        pressed = pygame.key.get_pressed()
+
+        if pressed[K_LEFT]:
+            self.acc.x = -ACC
+            self.facing_right = False
+        if pressed[K_RIGHT]:
+            self.acc.x = ACC
+            self.facing_right = True
+
 
     def _animate(self, dt: float):
         if self.walking and self.walk_right:
