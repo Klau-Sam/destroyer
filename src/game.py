@@ -56,6 +56,11 @@ class Game:
             pygame.display.update()
             self.clock.tick(settings.FPS)
 
+            hits = pygame.sprite.spritecollide(self.P1 , self.platforms, False)
+            if hits:
+                self.P1.pos.y = hits[0].rect.top + 1
+                self.P1.vel.y = 0
+
 
     # def events(self):
     #     """Handle events"""
